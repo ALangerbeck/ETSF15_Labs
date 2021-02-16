@@ -1,0 +1,17 @@
+int crcgen(unsigned long frame) {
+	byte crc = 0x00;
+	byte msb = 0x00;
+
+	crc = frame >> LEN_FRAME - 8;
+
+	for (int i = LEN_FRAME - 9; i >= 0; i--) {
+		msb = (crc & 0x80);
+		crc <<= 1;
+		crc |= ((frame >> i) & 0x01);
+
+		if (msb != 0) {
+			crc ^= 0xA7; // 0xA7 is our generator polynomial
+		}
+	}
+	return crc;
+}
