@@ -116,7 +116,7 @@ void loop() {
 			// +++ add code here 
 			rx.frame = inputFrame;
 			rx.frame_decompose();
-
+			
 			if((rx.frame_to != sh.getMyAddress()) | (rx.frame_type != FRAME_TYPE_ACK) | (crcgen(rx.frame) != 0)){
 				state = L1_RECEIVE;
 			}
@@ -147,7 +147,7 @@ void loop() {
 		case APP_PRODUCE: 
 			Serial.println("[State] APP_PRODUCE");
 			messageArray[1] = sh.select_led();
-			messageArray[0] = sh.get_address();
+			messageArray[0] = sh.get_address();   //Should this be changed to only read switch 1&2?
 			state = L2_DATA_SEND;
 			// ---
 			break;
