@@ -76,12 +76,7 @@ void loop() {
 			if(L1_receive(20000)){
 				state = L2_FRAME_REC;
 			}else{
-				if(tx.tx_attempts < 3){
-					tx.tx_attempts++;
-					state=L1_SEND;
-				}else{
-					state = APP_PRODUCE;
-				}
+				state = L2_RETRANSMIT;
 			}
 			// ---
 			break;
@@ -107,7 +102,12 @@ void loop() {
 		case L2_RETRANSMIT:
 			Serial.println("[State] L2_RETRANSMIT");
 			// +++ add code here 
-
+			if(tx.tx_attempts < 3){
+					tx.tx_attempts++;
+					state = L1_SEND;
+				}else{
+					state = APP_PRODUCE;
+				}
 			// ---
 			break;
 
@@ -139,12 +139,7 @@ void loop() {
 			if (rx.frame_seqnum == tx.frame_seqnum){
 				state = APP_PRODUCE;
 			}else{
-				if(tx.tx_attempts < 3){
-					tx.tx_attempts++;
-					state = L1_SEND;
-				}else{
-					state = APP_PRODUCE;
-				}
+				state = L2_RETRANSMIT;
 			}
 			// ---
 			break;
