@@ -80,7 +80,7 @@ void loop() {
 			// +++ add code here 
 			tx.frame_from = sh.getMyAddress();
 			tx.frame_to = messageArray[0];
-			tx.frame_type = 0;
+			tx.frame_type = 2;
 			tx.frame_seqnum = 0;
 			tx.frame_payload = messageArray[1];
 			tx.frame_crc = 0;
