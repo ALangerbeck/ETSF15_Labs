@@ -103,11 +103,12 @@ void loop() {
 			Serial.println("[State] L2_RETRANSMIT");
 			// +++ add code here 
 			if(tx.tx_attempts < 3){
-					tx.tx_attempts++;
-					state = L1_SEND;
-				}else{
-					state = APP_PRODUCE;
-				}
+				tx.tx_attempts++;
+				state = L1_SEND;
+			}else{
+				Serial.println("Transmission Failed: To many attempts");
+				state = APP_PRODUCE;
+			}
 			// ---
 			break;
 
@@ -116,8 +117,9 @@ void loop() {
 			// +++ add code here 
 			rx.frame = inputFrame;
 			rx.frame_decompose();
-			
+
 			if((rx.frame_to != sh.getMyAddress()) | (rx.frame_type != FRAME_TYPE_ACK) | (crcgen(rx.frame) != 0)){
+				Serial.println("Error in frame");
 				state = L1_RECEIVE;
 			}
 			else{
@@ -137,6 +139,7 @@ void loop() {
 			Serial.println("[State] L2_ACK_REC");
 			// +++ add code here
 			if (rx.frame_seqnum == tx.frame_seqnum){
+				Serial.println("Correct SeqNumber: Transmission Receive");
 				state = APP_PRODUCE;
 			}else{
 				state = L2_RETRANSMIT;
